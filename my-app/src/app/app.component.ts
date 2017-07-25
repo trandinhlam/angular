@@ -3,42 +3,18 @@ import { Hero } from './hero';
 import { HeroService } from './hero.service';
 
 @Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css'],
+	selector: 'app',
 	template: `
 		<h1>{{title}}</h1>
-		<h2>My Heroes</h2>
-		<ul class="heroes">
-			<li *ngFor="let hero of heroes" 
-			[class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-				<span class="badge">{{hero.id}}</span> {{hero.name}}
-			</li>
-		</ul>
-		<hero-detail [hero] ="selectedHero"></hero-detail>
+		<a routerLink="/">Home</a>
+		<nav>
+			<a routerLink="/heroes">Heroes</a>
+			<a routerLink="/dashboard">Dash Board</a>
+		</nav>
+		<router-outlet></router-outlet>
 		`,
 		providers: [HeroService]
 })
-
 export class AppComponent {
-	title = 'Tour of Heroes';
-	heroes : Hero[];
-	selectedHero: Hero;
-
-	onSelect(hero: Hero): void
-	{
-		this.selectedHero = hero;
-	}
-
-	constructor(private heroService: HeroService)
-	{
-	}
-
-	getHeroes(): void {
-		this.heroes = this.heroService.getHeroes().then(heroes => this.heroes = heroes);
-	}
-
-	ngOnInit(): void {
-		this.getHeroes();
-	}
+	title = 'tour of Heroes';
 }
