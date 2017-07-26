@@ -4,6 +4,7 @@ import { HeroService } from './hero.service';
 
 @Component({
 	selector: 'app',
+	styleUrls: ['./app.component.css'],
 	template: `
 		<h1>{{title}}</h1>
 		<a routerLink="/">Home</a>
