@@ -34,6 +34,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 						body :{
 							id: user.id,
 							username: user.username,
+							firstName: user.firstName || user.username,
 							token: 'fake-jwt-token'
 						}
 					})));
@@ -45,7 +46,29 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 				}
 				return ;
 			}
-			if(connection.request.url.endsWith('/api/users') && connection.request.method === RequestMethod.Post)
+			// get all users
+			if(connection.request.url.endsWith('/api/users') && connection.request.method === RequestMethod.Get)
+			{
+				//check for fake auth token in header and return users if valid
+				if (connection.request.headers.get('Authorization') === 'Bearer fake-jwt-token')
+				{
+					connection.mockRespond(new Response(new ResponseOptions({
+						status: 200,
+						body: users
+					})));
+				}
+				else
+				{
+					//return 401 not authorised if token is null or invalid
+					connection.mockRespond(new Response(new ResponseOptions({
+						status: 401
+					})));
+				}
+				return;
+			}
+
+			//create new user
+			if(connection.request.url.endsWith('/api/users/') && connection.request.method === RequestMethod.Post)
 			{
 				let newUser = JSON.parse(connection.request.getBody());
 				//validate duplicate user
@@ -64,6 +87,38 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 					users.push(newUser);
 					localStorage.setItem('users', JSON.stringify(users));
 					connection.mockRespond(new Response(new ResponseOptions({ status: 200 })));
+				}
+				return;
+			}
+
+			//delete user 
+			if(connection.request.url.match(/\/api\/users\/\d+$/) && connection.request.method === RequestMethod.Delete)
+			{
+				if (connection.request.headers.get('Authorization') === 'Bearer fake-jwt-token')
+				{
+					//find user by id in users array
+					let part = connection.request.url.split('/');
+					let user_id = parseInt(part[part.length-1]);
+					for (let i = 0; i<users.length ; i++)
+					{
+						if (users[i].id === user_id)
+						{
+							users.splice(i, 1);
+							localStorage.setItem('users', JSON.stringify(users));
+							break;
+						}
+					}
+
+					connection.mockRespond(new Response(new ResponseOptions({
+						status: 200
+					})));
+				}
+				else
+				{
+					//return 401 not authorised if token is null or invalid
+					connection.mockRespond(new Response(new ResponseOptions({
+						status: 401
+					})));
 				}
 				return;
 			}

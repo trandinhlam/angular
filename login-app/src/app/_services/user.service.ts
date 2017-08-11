@@ -12,7 +12,7 @@ export class UserService {
 
 	getAll()
 	{
-
+		return this.http.get('/api/users', this.jwt()).map(( response: Response) => response.json());
 	}
 
 	getById(id: number)
@@ -22,7 +22,7 @@ export class UserService {
 
 	create(user: User)
 	{
-		return this.http.post('/api/users', user, this.jwt()).map((response: Response) => response.json());
+		return this.http.post('/api/users/', user, this.jwt()).map((response: Response) => response.json());
 	}
 
 	update(user: User)
@@ -32,7 +32,7 @@ export class UserService {
 
 	delete(id: number)
 	{
-
+		return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
 	}
 
 	// private helper methods
