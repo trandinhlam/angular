@@ -7,17 +7,19 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class AlertService {
 	private subject = new Subject<any>();
-	private keppApterNavigationChange = false;
+	private keepAfterNavigationChange = false;
 	constructor(private router: Router) {
 
 	}
 
-	success(message: string, keppApterNavigationChange = false) {
-
+	success(message: string, keepAfterNavigationChange = false) {
+		this.keepAfterNavigationChange = keepAfterNavigationChange;
+		this.subject.next({type:'success', text: message})
 	}
 
-	error(message: string, keppApterNavigationChange = false) {
-
+	error(message: string, keepAfterNavigationChange = false) {
+		this.keepAfterNavigationChange = keepAfterNavigationChange;
+		this.subject.next({type:'error', text: message})
 	}
 
 	getMessage(): Observable<any> {

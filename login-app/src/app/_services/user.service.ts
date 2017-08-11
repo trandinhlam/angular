@@ -5,31 +5,44 @@ import { User } from '../_models/index';
 
 @Injectable()
 export class UserService {
-	constructor(private http: Http) {}
-
-	getAll() {
-
-	}
-
-	getById(id: number) {
+	constructor(private http: Http)
+	{
 
 	}
 
-	create(user: User) {
+	getAll()
+	{
 
 	}
 
-	update(user: User) {
+	getById(id: number)
+	{
 
 	}
 
-	delete(id: number) {
+	create(user: User)
+	{
+		return this.http.post('/api/users', user, this.jwt()).map((response: Response) => response.json());
+	}
+
+	update(user: User)
+	{
 
 	}
 
-	// private helprt methods
+	delete(id: number)
+	{
 
-	private jwt() {
-		
 	}
+
+	// private helper methods
+
+	 private jwt() {
+        // create authorization header with jwt token
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            return new RequestOptions({ headers: headers });
+        }
+    }
 }
