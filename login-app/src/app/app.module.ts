@@ -14,6 +14,7 @@ import { routing }        from './app.routing';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
+import { EditComponent } from './edit/index';
 import { AuthGuard } from './_guards/index';
 import { AlertComponent } from './_directives/index';
 
@@ -25,7 +26,8 @@ import { AlertService, UserService, AuthenticationService } from './_services/in
     HomeComponent,
     AlertComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,

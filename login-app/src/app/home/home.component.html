@@ -5,8 +5,8 @@
 	<ul>
 		<li *ngFor="let user of users">
 			<p>
-				{{user.username}} ({{user.firstName || user.username}}) 
-				<a class="btn btn-warning" (click)="delete">Edit</a>
+				{{user.username}} ({{user.firstName || user.username}} {{user.lastName}}) 
+				<a class="btn btn-warning" [routerLink]="['/edit/'+user.id]">Edit</a>
 				<a class="btn btn-danger" (click)="delete(user.id)" *ngIf="user.username !=currentUser.username">Delete</a>
 			</p>
 		</li>
