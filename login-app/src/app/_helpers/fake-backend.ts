@@ -122,6 +122,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 					});
 					let index = users.indexOf(oldUser);
 					users[index] = updatedUser;
+					localStorage.setItem('users', JSON.stringify(users));
 					connection.mockRespond(new Response(new ResponseOptions({
 							status: 200
 					})));
