@@ -1,0 +1,25 @@
+<div class="col-sm-6 col-sm-offset-3">
+	<h1>Hi {{currentUser.username}}!</h1>
+	<h3>All register users:</h3>
+	<p><a class="btn btn-info" [routerLink]="['/register']">Add new user</a></p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="col-md-4">Info</th>
+				<th class="col-md-4">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let user of users">
+				<td>
+					{{user.username}} ({{user.firstName || user.username}} {{user.lastName}}) 
+				</td>
+				<td>
+					<a class="btn btn-warning" [routerLink]="['/edit/'+user.id]">Edit</a>
+					<a class="btn btn-danger" (click)="delete(user.id)" *ngIf="user.username !=currentUser.username">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p><a class="btn btn-info" [routerLink]="['/login']">Logout</a></p>
+</div>
