@@ -26,14 +26,14 @@ export class PlayControlComponent implements OnInit {
   {
   	this.mode = PianoMode.Play;
   	this.modeSelected.emit(PianoMode.Play);
-  	console.log(this.modeSelected);
+  	// console.log(this.modeSelected);
   }
 
   handleQuizBtnClick()
   {
   	this.mode = PianoMode.Quiz;
   	this.modeSelected.emit(PianoMode.Quiz);
-  	console.log(this.modeSelected);
+  	// console.log(this.modeSelected);
   }
 
 
