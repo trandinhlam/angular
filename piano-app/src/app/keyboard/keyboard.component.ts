@@ -1,12 +1,13 @@
-import { Component,Output, EventEmitter, OnInit } from '@angular/core';
+import { Component,Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 
-import { IPianoKey } from './ipiano-key';
+import { IPianoKey, KeyPadToKeyId } from './ipiano-key';
 
 @Component({
   selector: 'keyboard',
   templateUrl: './keyboard.component.html',
   styleUrls: ['./keyboard.component.css']
 })
+
 export class KeyboardComponent implements OnInit {
 	@Output() keyPlayed = new EventEmitter<number>();
 	// private highlightedKeyId: number = 0;
@@ -53,9 +54,32 @@ export class KeyboardComponent implements OnInit {
 
   }
 
-  keyPress(keyid: number)
-  {
-  	this.keyPlayed.emit(keyid);
+  @HostListener('document:keydown', ['$event'])
+  public handleKeyboardEvent(event: KeyboardEvent): void {
+      let keyId = this.getKeyIdFromKeypad(event.key);
+      if (keyId <16) return;
+      this.keyPress(keyId);
+      document.getElementById(""+keyId).setAttribute("style", "background: yellow; ");
+      setTimeout(function(){
+        document.getElementById(""+keyId).setAttribute("style", "color:white;");
+      }
+        , 200);   
   }
 
+  private getKeyIdFromKeypad(keypadId) : number
+  {
+    for (let i=0; i<KeyPadToKeyId.length; i++)
+    {
+      if (KeyPadToKeyId[i].KeyPad == keypadId)
+      {
+        return KeyPadToKeyId[i].KeyId;
+      }
+    }
+    return 0;
+  }
+
+  keyPress(keyid: number)
+  {
+  	this.keyPlayed.emit(keyid);1
+  }
 }
