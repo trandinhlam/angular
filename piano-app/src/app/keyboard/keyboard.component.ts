@@ -1,6 +1,6 @@
 import { Component,Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 
-import { IPianoKey, KeyPadToKeyId2 } from './ipiano-key';
+import { IPianoKey, KeyPadToKeyId, KeyPadToKeyId2, KeyPadToKeyId3 } from './ipiano-key';
 
 @Component({
   selector: 'keyboard',
@@ -11,12 +11,16 @@ import { IPianoKey, KeyPadToKeyId2 } from './ipiano-key';
 export class KeyboardComponent implements OnInit {
 	@Output() keyPlayed = new EventEmitter<number>();
 	// private highlightedKeyId: number = 0;
-  KeyPadToKeyId : any[];
+  private keyType : number = 1;
+  KeyPadToKeyId : any[][];
 	private pianoKeys : IPianoKey[];
 
   constructor()
   {
-    this.KeyPadToKeyId = KeyPadToKeyId2;
+    this.KeyPadToKeyId = new Array<any>();
+    this.KeyPadToKeyId[0] = KeyPadToKeyId;
+    this.KeyPadToKeyId[1] = KeyPadToKeyId2; 
+    this.KeyPadToKeyId[2] = KeyPadToKeyId3; 
   	//init pianokeys
   	this.pianoKeys = [
   		{whiteKeyId :16},
@@ -70,11 +74,11 @@ export class KeyboardComponent implements OnInit {
 
   private getKeyIdFromKeypad(keypadId) : number
   {
-    for (let i=0; i<this.KeyPadToKeyId.length; i++)
+    for (let i=0; i<this.KeyPadToKeyId[this.keyType].length; i++)
     {
-      if (this.KeyPadToKeyId[i].KeyPad == keypadId)
+      if (this.KeyPadToKeyId[this.keyType][i].KeyPad == keypadId)
       {
-        return this.KeyPadToKeyId[i].KeyId;
+        return this.KeyPadToKeyId[this.keyType][i].KeyId;
       }
     }
     return 0;
@@ -83,5 +87,14 @@ export class KeyboardComponent implements OnInit {
   keyPress(keyid: number)
   {
   	this.keyPlayed.emit(keyid);
+  }
+
+  changeKey()
+  {
+    this.keyType++;
+    if (this.keyType == this.KeyPadToKeyId.length)
+    {
+      this.keyType = 0;
+    }
   }
 }
